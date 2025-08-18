@@ -1,5 +1,3 @@
-Perfect ✅ — here’s your README.md in full Markdown format, ready to copy straight into your repo:
-
 # Terraform 2‑Tier AWS Architecture (VPC + EC2 + RDS)
 
 This project provisions a **highly‑available 2‑tier infrastructure on AWS** using **Terraform** with **Terraform Cloud (VCS workflow)** and **GitHub** as the source of truth.  
