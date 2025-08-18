@@ -1,26 +1,37 @@
-terraform {
-  required_version = ">= 1.6.0"
+# Root Terraform settings for this configuration
+terraform { 
+  # Require Terraform CLI v1.6.0 or newer
+  required_version = ">= 1.6.0" 
 
-  cloud {
-    organization = "two-tier-prod"
+  # Use Terraform Cloud as the backend
+  cloud { 
+    # Terraform Cloud organization name
+    organization = "two-tier-prod" 
 
+    # Target workspace in Terraform Cloud
     workspaces {
-      name = "terraform-2tier"
+      name = "terraform-2tier" 
     }
   }
 
+  # Required providers block
   required_providers {
+    # Official AWS provider source
     aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.50"
+      source  = "hashicorp/aws" 
+      version = "~> 5.50"       
     }
+
+    # Random provider for utilities (strings, IDs)
     random = {
-      source  = "hashicorp/random"
-      version = "~> 3.6"
+      source  = "hashicorp/random" 
+      version = "~> 3.6"           
     }
   }
 }
 
+# AWS provider configuration
 provider "aws" {
-  region = var.aws_region
+  # AWS region supplied via variable (e.g., "us-east-1")
+  region = var.aws_region 
 }
