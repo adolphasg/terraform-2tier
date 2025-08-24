@@ -11,25 +11,48 @@ It deploys:
 
 ---
 
-## 📐 Architecture
+### Architecture (Mermaid)
 
-
-           ┌───────────────────────────────┐
-           │          AWS Cloud             │
-           │                               │
-
-
-Internet → │ 🔒 VPC (10.0.0.0/16) │ │ │ │ ┌───────────────┐ │ │ │ Public Subnet │── EC2 (NGINX) ──┐ │ └───────────────┘ │ │ │ ┌───────────────┐ │ │ │ │ Public Subnet │── EC2 (NGINX) │ │ └───────────────┘ │ │ │ │ │ │ ┌───────────────┐ │ │ │ │ Private Subnet│── RDS MySQL │<──┘ │ └───────────────┘ │ │ │ └───────────────────────────────┘
-
+graph TD
+  Internet --> ALB[ALB / Public Subnet]
+  ALB --> Web1[EC2 (NGINX) - Public subnet A]
+  ALB --> Web2[EC2 (NGINX) - Public subnet B]
+  subgraph VPC["VPC (10.0.0.0/16)"]
+    direction TB
+    subgraph Public["Public subnets"]
+      Web1
+      Web2
+    end
+    subgraph Private["Private subnets"]
+      RDS[RDS MySQL - Private subnets]
+    end
+  end
+  Web1 -->|3306| RDS
+  Web2 -->|3306| RDS
 
 ---
 
-## 📂 Repository Structure
+### Repository Structure (Mermaid)
 
-
-
-terraform-2tier/ │── versions.tf │── variables.tf │── main.tf │── outputs.tf │── modules/ │ ├── vpc/ │ │ ├── main.tf │ │ ├── variables.tf │ │ └── outputs.tf │ ├── web/ │ │ ├── main.tf │ │ ├── variables.tf │ │ └── outputs.tf │ └── rds/ │ ├── main.tf │ ├── variables.tf │ └── outputs.tf
-
+flowchart TB
+  repo["terraform-2tier/"]
+  repo --> versions["versions.tf"]
+  repo --> variables["variables.tf"]
+  repo --> main["main.tf"]
+  repo --> outputs["outputs.tf"]
+  repo --> modules["modules/"]
+  modules --> vpc["vpc/"]
+  vpc --> vpc_main["main.tf"]
+  vpc --> vpc_vars["variables.tf"]
+  vpc --> vpc_out["outputs.tf"]
+  modules --> web["web/"]
+  web --> web_main["main.tf"]
+  web --> web_vars["variables.tf"]
+  web --> web_out["outputs.tf"]
+  modules --> rds["rds/"]
+  rds --> rds_main["main.tf"]
+  rds --> rds_vars["variables.tf"]
+  rds --> rds_out["outputs.tf"]
 
 ---
 
@@ -43,7 +66,7 @@ terraform-2tier/ │── versions.tf │── variables.tf │── main.tf 
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### **1. Clone this repo**
 
@@ -105,7 +128,7 @@ Connect to RDS:
 mysql -h <RDS_ENDPOINT> -u <DB_USERNAME> -p <DB_NAME>
 
 
-Enter your password → you should see the mysql> prompt 🎉
+Enter your password → you should see the mysql> prompt 
 
 7. Destroy Infrastructure
 
